@@ -7,6 +7,22 @@ boards = 9
 height = 3
 width  = 3
 
+wins = (
+    # Horrizontal
+    (0,1,2),
+    (3,4,5),
+    (6,7,8),
+    
+    # Vertical
+    (0,3,6),
+    (1,4,7),
+    (2,5,8),
+    
+    # Diagonal
+    (0,4,8),
+    (6,4,2),
+)
+
 def get_player_user_id(the_game, player_number):
     if player_number == 1: return the_game.player1
     if player_number == 2: return the_game.player2
@@ -50,6 +66,14 @@ def is_move_valid(active_board, current_state, square):
     if current_state[square] != " ": return False
     if active_board not in (-1, b): return False
     return True
+
+def test_win(board):
+    for w1, w2, w3 in wins:
+        if board[w1] != " ":
+            if board[w1] == board[w2] == board[w3]:
+                return True
+    return False
+            
 
 # def column(current_state, col):
 #     return (current_state[col + row*width] for row in range(height))
