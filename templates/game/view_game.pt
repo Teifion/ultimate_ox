@@ -1,0 +1,190 @@
+<div metal:use-macro="layout">
+    <style type="text/css" media="screen" metal:fill-slot="css">
+        #the_game
+        {
+            border: 0px solid #000;
+            width: 900px;
+            height: 900px;
+            clear: both;
+            margin: 0 auto;
+        }
+        
+        .board, .active_board
+        {
+            border: 3px solid #777;
+            width: 234px;
+            height: 234px;
+            float: left;
+            padding: 30px;
+            background-color: #AAA;
+        }
+        
+        .square
+        {
+            border: 2px solid #CCC;
+            width: 74px;
+            height: 44px;
+            float: left;
+            
+            font-size:  70px;
+            text-align: center;
+            padding-top: 30px;
+        }
+        
+        .player1
+        {
+            border-color: #A00;
+        }
+        
+        .player2
+        {
+            border-color: #00A;
+        }
+        
+        .active_board
+        {
+            background-color: #FFF;
+        }
+        
+        .move_clicker
+        {
+            display: block;
+            /*background-color: #000;*/
+            text-decoration: none;
+            width: 74px;
+            height: 74px;
+            margin-top: -30px;
+        }
+    </style>
+    <div metal:fill-slot="header_buttons" style="display:inline-block;">
+        <a class="inbutton" href="${request.route_url('ultimate_ox.menu')}">O's and X's menu</a>
+    </div>
+    <div metal:fill-slot="content">
+        <script type="text/javascript" charset="utf-8">
+            $(function() {
+                $('${",".join(player_1_ids)}').addClass('player1');
+                $('${",".join(player_2_ids)}').addClass('player2');
+                
+                if (${the_game.active_board} == -1)
+                {
+                    $('.board').addClass('active_board');
+                    $('.board').removeClass('board');
+                }
+                else
+                {
+                    $('#board_${the_game.active_board}').addClass('active_board');
+                    $('#board_${the_game.active_board}').removeClass('board');
+                }
+            });
+            
+            function load_check_turn_html()
+            {
+                $('#my_turn').load('${request.route_url("ultimate_ox.check_turn", game_id=the_game.id)}', {}, check_turn);
+            }
+            
+            function check_turn()
+            {
+                var my_turn = $('#my_turn').html();
+                
+                if (my_turn == "True")
+                {
+                    location.reload();
+                }
+            }
+            
+            function setIntervalX(callback, delay, repetitions, slow_delay) {
+                var x = 0;
+                var intervalID = window.setInterval(function () {
+                   callback();
+                   if (++x === repetitions) {
+                       window.clearInterval(intervalID);
+                       var newInterval = window.setInterval("load_check_turn_html();", slow_delay);
+                   }
+                }, delay);
+            }
+        </script>
+        
+        <div tal:condition="message != ''" id="flash_update" style="border: 1px solid #AAA; margin:10px; padding:10px; text-align:center;">
+            ${message}
+            
+            <script type="text/javascript" charset="utf-8">
+                $(document).ready(function() {
+                    $('#flash_update').show();
+                    $('#flash_update').animate({backgroundColor: "#${flash_colour}"}, 500);
+                    $('#flash_update').animate({backgroundColor: "#FFF"}, 1500);
+                });
+            </script>
+        </div>
+        <div id="my_turn" style="display:none;">
+            &nbsp;
+        </div>
+        <div tal:condition="the_game.winner != None" style="margin-bottom:10px;">
+            <span tal:condition="winner.id != -1">
+                The game is over, ${winner.name} won the game on turn ${the_game.turn-1}
+            </span>
+            
+            <span tal:condition="winner.id == -1">
+                The game is drawn on turn ${the_game.turn-1}
+            </span>
+        </div>
+        
+        <div class="player1_block" tal:condition="profile.preferred_colour">
+            You are the blue player, playing against ${opponent.name}
+        </div>
+        <div class="player2_block" tal:condition="not profile.preferred_colour">
+            You are the yellow player, playing against ${opponent.name}
+        </div>
+        <br /><br />
+        
+        <div id="the_game">
+            <div tal:repeat="board range(9)" class="board" id="board_${board}">
+                <div tal:repeat="square range(9)" class="square" id="square_${square + (board*9)}">
+                    <div tal:condition="'#square_%s' % (square + board * 9) in player_1_ids">
+                        O
+                    </div>
+                    
+                    <div tal:condition="'#square_%s' % (square + board * 9) in player_2_ids">
+                        X
+                    </div>
+                    
+                    <div tal:condition="your_turn">
+                        <div tal:condition="the_game.active_board == -1 or the_game.active_board == board">
+                            <div tal:condition="'#square_%s' % (square + board * 9) not in player_1_ids + player_2_ids">
+                                <a href="${request.route_url('ultimate_ox.make_move')}?game_id=${the_game.id}&amp;square=${(square + board * 9)}" class="move_clicker">
+                                    &nbsp;
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div tal:condition="not your_turn and the_game.winner is None" style="text-align:center;padding:10px;width:680px;">
+            It is not currently your turn. The page will automatically refresh when it is.
+            
+            <script type="text/javascript">
+                // Check every 30 seconds
+                setIntervalX(function () {
+                    load_check_turn_html()
+                }, 1000*5, 12, 1000*30);
+            </script>
+        </div>
+        
+        <div tal:condition="the_game.winner != None">
+            <div tal:condition="the_game.rematch == None">
+                <a href="${request.route_url('ultimate_ox.rematch', game_id=the_game.id)}" class="inbutton">Start rematch</a>
+            </div>
+            <div tal:condition="the_game.rematch != None">
+                <a href="${request.route_url('ultimate_ox.game', game_id=the_game.rematch)}" class="inbutton">Goto rematch</a>
+            </div>
+        </div>
+        <div tal:condition="the_game.source != None">
+            <a href="${request.route_url('ultimate_ox.game', game_id=the_game.source)}" class="inbutton">Goto previous game</a>
+        </div>
+    </div>
+    
+    <div metal:fill-slot="footer">
+        Open source - <a href="http://github.com/teifion/ultimate_ox">http://github.com/teifion/ultimate_ox</a>
+    </div>
+</div>
