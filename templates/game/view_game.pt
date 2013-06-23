@@ -62,9 +62,10 @@
     <div metal:fill-slot="content">
         <script type="text/javascript" charset="utf-8">
             $(function() {
-                $('${",".join(player_1_ids)}').addClass('player1');
-                $('${",".join(player_2_ids)}').addClass('player2');
+                // $('${",".join(player_1_ids)}').addClass('player1');
+                // $('${",".join(player_2_ids)}').addClass('player2');
                 
+                /*
                 if (${the_game.active_board} == -1)
                 {
                     $('.board').addClass('active_board');
@@ -75,6 +76,7 @@
                     $('#board_${the_game.active_board}').addClass('active_board');
                     $('#board_${the_game.active_board}').removeClass('board');
                 }
+                */
             });
             
             function load_check_turn_html()
@@ -137,8 +139,9 @@
         <br /><br />
         
         <div id="the_game">
-            <div tal:repeat="board range(9)" class="board" id="board_${board}">
-                <div tal:repeat="square range(9)" class="square" id="square_${square + (board*9)}">
+            <div tal:repeat="board range(9)" id="board_${board}" tal:attributes="class 'active_board' if the_game.active_board in (-1, board) else 'board'">
+                <div tal:repeat="square range(9)" class="square" id="square_${square + (board*9)}"
+                    tal:attributes="class 'square player%s' % the_game.current_state[(square + board * 9)]">
                     <div tal:condition="'#square_%s' % (square + board * 9) in player_1_ids">
                         O
                     </div>
