@@ -66,11 +66,6 @@ def view_game(request):
     player_2_ids = ["#square_%s" % p for p in rules.player_squares(the_game.current_state, 2)]
     active_board = -1
     
-    print("\n\n")
-    print(player_1_ids)
-    print(player_2_ids)
-    print("\n\n")
-    
     return dict(
         title       = "Ultimate O's and X's: {}".format(opponent.name),
         layout      = layout,
@@ -80,8 +75,6 @@ def view_game(request):
         profile     = profile,
         winner      = winner,
         message     = message,
-        # positions   = rules.visual_positions(),
-        # valid_moves = list(rules.valid_moves(the_game.current_state)),
         opponent    = opponent,
         game_state  = game_state,
         
@@ -97,19 +90,19 @@ def make_move(request):
     flash_colour = "A00"
     
     game_id  = int(request.params['game_id'])
-    column   = int(request.params['column'])
+    square   = int(request.params['square'])
     
     the_game = db.get_game(game_id)
     current_player = rules.current_player(the_game)
     
     if current_player == the_user.id:
         try:
-            if not rules.is_move_valid(the_game.current_state, column):
+            if not rules.is_move_valid(the_game.active_board, the_game.current_state, square):
                 raise Exception("Invalid move")
-            
-            db.perform_move(the_game, column)
-            return HTTPFound(location=request.route_url("ultimate_ox.game", game_id=game_id))
+            db.perform_move(the_game, square)
+            return HTTPFound(location=request.route_url("ultimate_ox.view_game", game_id=game_id))
         except Exception as e:
+            raise
             message = e.args[0]
     else:
         message = "It is not your turn"
@@ -134,7 +127,7 @@ def rematch(request):
     
     # Not over yet? Send them back to the game in question.
     if the_game.winner == None:
-        return HTTPFound(location=request.route_url("ultimate_ox.game", game_id=game_id))
+        return HTTPFound(location=request.route_url("ultimate_ox.view_game", game_id=game_id))
     
     if the_user.id == the_game.player1:
         opponent = db.find_user(the_game.player2)
@@ -143,8 +136,7 @@ def rematch(request):
     
     newgame_id = db.new_game(the_user, opponent, rematch=game_id)
     the_game.rematch = newgame_id
-    return HTTPFound(location=request.route_url("ultimate_ox.game", game_id=newgame_id))
-    
+    return HTTPFound(location=request.route_url("ultimate_ox.view_game", game_id=newgame_id))
 
 def check_turn(request):
     request.do_not_log = True

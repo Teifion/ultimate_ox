@@ -15,7 +15,10 @@ from sqlalchemy import or_, and_
 from sqlalchemy import func
 import datetime
 
-from . import rules
+from . import (
+    rules,
+    actions
+)
 
 def get_profile(user_id):
     the_profile = config['DBSession'].query(UltimateOXProfile).filter(UltimateOXProfile.user == user_id).first()
@@ -124,36 +127,36 @@ def get_game(game_id):
     
     return the_game
 
-def add_turn(the_game, column):
-    new_turn           = ConnectFourMove()
+def add_turn(the_game, square):
+    new_turn           = UltimateOXMove()
     new_turn.game      = the_game.id
     new_turn.player    = rules.current_player(the_game)
     
-    new_turn.move      = column
+    new_turn.move      = square
     new_turn.timestamp = datetime.datetime.now()
     
     config['DBSession'].add(new_turn)
 
-def end_game(the_game):
-    the_game.complete = True
+# def end_game(the_game):
+#     the_game.complete = True
     
-    current_player = rules.current_player_number(the_game.turn)
-    the_game.winner = rules.get_player_user_id(the_game, 3-current_player)
+#     current_player = rules.current_player_number(the_game.turn)
+#     the_game.winner = rules.get_player_user_id(the_game, 3-current_player)
     
-def draw_game(the_game):
-    the_game.complete = True
-    the_game.winner = -1
+# def draw_game(the_game):
+#     the_game.complete = True
+#     the_game.winner = -1
 
 def perform_move(the_game, column):
     add_turn(the_game, column)
     actions.perform_move(the_game, column)
-    actions.increment_turn(the_game)
+    the_game.turn += 1
     
-    end_result = rules.check_for_game_end(the_game.current_state)
-    if end_result == True:
-        end_game(the_game)
-    elif end_result == None:
-        draw_game(the_game)
+    # end_result = rules.check_for_game_end(the_game.current_state)
+    # if end_result == True:
+    #     end_game(the_game)
+    # elif end_result == None:
+    #     draw_game(the_game)
     
     config['DBSession'].add(the_game)
 

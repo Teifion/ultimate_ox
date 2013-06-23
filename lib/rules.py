@@ -1,3 +1,5 @@
+import math
+
 empty_overall = " " * 9
 empty_board   = " " * 81
 
@@ -42,8 +44,12 @@ def player_squares(squares, player):
         if s == str(player):
             yield i
 
-# def is_move_valid(current_state, col):
-#     return first_empty(column(current_state, col)) is not None
+def is_move_valid(active_board, current_state, square):
+    b, s = square_to_boardsquare(square)
+    
+    if current_state[square] != " ": return False
+    if active_board not in (-1, b): return False
+    return True
 
 # def column(current_state, col):
 #     return (current_state[col + row*width] for row in range(height))
