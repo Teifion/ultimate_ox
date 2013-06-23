@@ -16,8 +16,7 @@ class UltimateOXProfile(Base):
     __tablename__      = 'ultimate_ox_profiles'
     user               = Column(Integer, ForeignKey("users.id"), nullable=False, index=True, primary_key=True)
     
-    preferred_colour   = Column(Integer, default=0)
-    preferred_opponent = Column(Integer, default=1)
+    preferred_colour  = Column(Boolean, default=False)
 
 class UltimateOXGame(Base):
     __tablename__ = 'ultimate_ox_games'

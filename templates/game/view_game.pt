@@ -141,10 +141,10 @@
         </div>
         
         <div class="player1_block" tal:condition="profile.preferred_colour">
-            You are the blue player, playing against ${opponent.name}
+            You are the X's (Blue), playing against ${opponent.name}
         </div>
         <div class="player2_block" tal:condition="not profile.preferred_colour">
-            You are the yellow player, playing against ${opponent.name}
+            You are the O's (Red), playing against ${opponent.name}
         </div>
         <br /><br />
         

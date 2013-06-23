@@ -38,10 +38,10 @@ def menu(request):
 
 def stats(request):
     the_user = config['get_user_func'](request)
-    db_funcs.get_profile(the_user.id)
+    db.get_profile(the_user.id)
     layout = get_renderer(config['layout']).implementation()
     
-    stats = db_funcs.get_stats(the_user.id)
+    stats = db.get_stats(the_user.id)
     
     return dict(
         title    = "Connect Four stats",
@@ -57,16 +57,16 @@ def head_to_head_stats(request):
     
     if "opponent_name" in request.params:
         opponent_name = request.params['opponent_name'].strip().upper()
-        opponent = db_funcs.find_user(opponent_name)
+        opponent = db.find_user(opponent_name)
         
     else:
         opponent_id = int(request.params['opponent_id'])
-        opponent = db_funcs.find_user(opponent_id)
+        opponent = db.find_user(opponent_id)
     
     stats = None
         
     if opponent is not None:
-        stats = db_funcs.get_stats(the_user.id, opponent.id)
+        stats = db.get_stats(the_user.id, opponent.id)
     else:
         message = "No opponent could be found"
     
@@ -78,7 +78,7 @@ def head_to_head_stats(request):
 
 def preferences(request):
     the_user = config['get_user_func'](request)
-    profile = db_funcs.get_profile(the_user.id)
+    profile = db.get_profile(the_user.id)
     layout = get_renderer(config['layout']).implementation()
     message = ""
     
