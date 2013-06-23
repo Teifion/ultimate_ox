@@ -144,9 +144,9 @@ def end_game(the_game):
     the_game.winner = rules.get_player_user_id(the_game, 3-current_player)
     the_game.active_board = -1
     
-# def draw_game(the_game):
-#     the_game.complete = True
-#     the_game.winner = -1
+def draw_game(the_game):
+    the_game.complete = True
+    the_game.winner = -1
 
 def perform_move(the_game, square):
     add_turn(the_game, square)
@@ -160,8 +160,8 @@ def perform_move(the_game, square):
     end_result = rules.test_win(the_game.overall_state)
     if end_result in ("1", "2"):
         end_game(the_game)
-    # elif end_result == None:
-    #     draw_game(the_game)
+    elif " " not in the_game.current_state:
+        draw_game(the_game)
     
     config['DBSession'].add(the_game)
 

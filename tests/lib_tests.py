@@ -3,6 +3,9 @@ from ..lib import (
     rules,
 )
 
+one_move_to_win = " 11112 1 2   2 2        22 2   2    2121212212     2  1 1      21  2        2    "
+one_move_to_win = " 11112111211121211111111221211121111212121221211111211111111111211121111111121111"
+
 class RulesTester(unittest.TestCase):
     def test_win(self):
         win_boards = (
