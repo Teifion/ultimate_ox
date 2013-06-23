@@ -147,9 +147,9 @@ def add_turn(the_game, square):
 #     the_game.complete = True
 #     the_game.winner = -1
 
-def perform_move(the_game, column):
-    add_turn(the_game, column)
-    actions.perform_move(the_game, column)
+def perform_move(the_game, square):
+    add_turn(the_game, square)
+    actions.perform_move(the_game, square)
     the_game.turn += 1
     
     # end_result = rules.check_for_game_end(the_game.current_state)
@@ -157,6 +157,8 @@ def perform_move(the_game, column):
     #     end_game(the_game)
     # elif end_result == None:
     #     draw_game(the_game)
+    
+    actions.set_active_board(the_game, square)
     
     config['DBSession'].add(the_game)
 

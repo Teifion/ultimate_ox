@@ -7,6 +7,14 @@ def perform_move(the_game, square):
     mutable_board[square] = str(player_number)
     the_game.current_state = "".join(mutable_board)
 
+def set_active_board(the_game, square):
+    b, s = rules.square_to_boardsquare(square)
+    
+    if the_game.overall_state[b] == " ":
+        the_game.active_board = s
+    else:
+        the_game.active_board = -1
+
 def set_state_by_colour(current_state, preferred_colour, player_is_player1):
     # Swap them to A and B now so we can swap them back to 1 and 2 later
     # without repeating this step
