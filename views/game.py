@@ -50,24 +50,28 @@ def view_game(request):
     the_game = db.get_game(game_id)
     message  = ""
     
-    if the_game.player1 == the_user.id:
-        opponent = db.find_user(the_game.player2)
-        game_state = actions.set_state_by_colour(the_game.current_state, profile.preferred_colour, player_is_player1=True)
-    else:
-        opponent = db.find_user(the_game.player1)
-        game_state = actions.set_state_by_colour(the_game.current_state, profile.preferred_colour, player_is_player1=False)
-    
-    winner = None
-    if the_game.winner != None:
-        winner = db.find_user(the_game.winner)
-    
-    # player_1_ids = ["#board_1", "#square_1_1"]
     player_1_ids = [p for p in rules.player_squares(the_game.current_state, 1)]
     player_2_ids = [p for p in rules.player_squares(the_game.current_state, 2)]
     
     player_1_boards = ["#board_%s" % p for p in rules.player_squares(the_game.overall_state, 1)]
     player_2_boards = ["#board_%s" % p for p in rules.player_squares(the_game.overall_state, 2)]
-    active_board = -1
+    
+    if the_game.player1 == the_user.id:
+        opponent = db.find_user(the_game.player2)
+        game_state = actions.set_state_by_colour(the_game.current_state, profile.preferred_colour, player_is_player1=True)
+        
+        your_ids, opponent_ids = player_1_ids, player_2_ids
+        your_boards, opponent_boards = player_1_boards, player_2_boards
+    else:
+        opponent = db.find_user(the_game.player1)
+        game_state = actions.set_state_by_colour(the_game.current_state, profile.preferred_colour, player_is_player1=False)
+        
+        your_ids, opponent_ids = player_2_ids, player_1_ids
+        your_boards, opponent_boards = player_2_boards, player_1_boards
+    
+    winner = None
+    if the_game.winner != None:
+        winner = db.find_user(the_game.winner)
     
     return dict(
         title       = "Ultimate O's and X's: {}".format(opponent.name),
@@ -81,11 +85,11 @@ def view_game(request):
         opponent    = opponent,
         game_state  = game_state,
         
-        player_1_ids = player_1_ids,
-        player_2_ids = player_2_ids,
+        your_ids = your_ids,
+        opponent_ids = opponent_ids,
         
-        player_1_boards = player_1_boards,
-        player_2_boards = player_2_boards,
+        your_boards = your_boards,
+        opponent_boards = opponent_boards,
     )
 
 def make_move(request):

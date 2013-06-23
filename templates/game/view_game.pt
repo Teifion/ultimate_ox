@@ -32,23 +32,27 @@
             line-height: 80px;
         }
         
-        .player1, .square_player1
+        .your, .square_player1
         {
+            /*border-color: #${'A00' if profile.preferred_colour else '00A'};*/
             border-color: #A00;
         }
         
-        .player2, .square_player2
+        .opponent, .square_player2
         {
+            /*border-color: #${'00A' if profile.preferred_colour else 'A00'};*/
             border-color: #00A;
         }
         
         .square_player1
         {
+            /*background-color: #${'EEF' if profile.preferred_colour else 'FEE'};*/
             background-color: #FEE;
         }
         
         .square_player2
         {
+            /*background-color: #${'FEE' if profile.preferred_colour else 'EEF'};*/
             background-color: #EEF;
         }
         
@@ -72,8 +76,8 @@
     <div metal:fill-slot="content">
         <script type="text/javascript" charset="utf-8">
             $(function() {
-                $('${",".join(player_1_boards)}').addClass('player1');
-                $('${",".join(player_2_boards)}').addClass('player2');
+                $('${",".join(your_boards)}').addClass('your');
+                $('${",".join(opponent_boards)}').addClass('opponent');
                 
                 /*
                 if (${the_game.active_board} == -1)
@@ -140,29 +144,30 @@
             </span>
         </div>
         
-        <div class="player1_block" tal:condition="profile.preferred_colour">
-            You are the X's (Blue), playing against ${opponent.name}
-        </div>
-        <div class="player2_block" tal:condition="not profile.preferred_colour">
+        <div class="your_block" tal:condition="profile.preferred_colour">
             You are the O's (Red), playing against ${opponent.name}
+        </div>
+        <div class="opponent_block" tal:condition="not profile.preferred_colour">
+            You are the X's (Blue), playing against ${opponent.name}
         </div>
         <br /><br />
         
         <div id="the_game">
             <div tal:repeat="board range(9)" id="board_${board}" tal:attributes="class 'active_board' if the_game.active_board in (-1, board) else 'board'">
                 <div tal:repeat="square range(9)" id="square_${square + (board*9)}"
-                    tal:attributes="class 'square_player%s' % the_game.current_state[(square + board * 9)]">
-                    <div tal:condition="(square + board * 9) in player_1_ids">
-                        O
+                    tal:attributes="class 'square_player%s' % game_state[(square + board * 9)]">
+                    
+                    <div tal:condition="(square + board * 9) in your_ids">
+                        ${'O' if profile.preferred_colour else 'X'}
                     </div>
                     
-                    <div tal:condition="(square + board * 9) in player_2_ids">
-                        X
+                    <div tal:condition="(square + board * 9) in opponent_ids">
+                        ${'X' if profile.preferred_colour else 'O'}
                     </div>
                     
                     <div tal:condition="your_turn and the_game.winner is None">
                         <div tal:condition="the_game.active_board == -1 or the_game.active_board == board">
-                            <div tal:condition="(square + board * 9) not in player_1_ids + player_2_ids">
+                            <div tal:condition="(square + board * 9) not in your_ids + opponent_ids">
                                 <a href="${request.route_url('ultimate_ox.make_move')}?game_id=${the_game.id}&amp;square=${(square + board * 9)}" class="move_clicker">
                                     &nbsp;
                                 </a>

@@ -25,10 +25,10 @@
                 <tr>
                     <td><label for="preferred_colour">Your colour:</label></td>
                     <td style="background-color:#FAA; width:50px; text-align:center;">
-                        <input type="radio" name="preferred_colour" id="preferred_colour_true" value="true" tal:attributes="checked profile.preferred_colour"/><label for="preferred_colour_true">: X</label>
+                        <input type="radio" name="preferred_colour" id="preferred_colour_true" value="true" tal:attributes="checked profile.preferred_colour"/><label for="preferred_colour_true">: O</label>
                     </td>
                     <td style="background-color:#AAF; width:50px; text-align:center;">
-                        <input type="radio" name="preferred_colour" id="preferred_colour_false" value="false" tal:attributes="checked not profile.preferred_colour"/><label for="preferred_colour_false">: O</label>
+                        <input type="radio" name="preferred_colour" id="preferred_colour_false" value="false" tal:attributes="checked not profile.preferred_colour"/><label for="preferred_colour_false">: X</label>
                     </td>
                 </tr>
             </table>
