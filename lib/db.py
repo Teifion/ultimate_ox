@@ -152,13 +152,15 @@ def perform_move(the_game, square):
     actions.perform_move(the_game, square)
     the_game.turn += 1
     
+    actions.set_active_board(the_game, square)
+    
+    rules.check_for_sub_win(the_game, square)
+    
     # end_result = rules.check_for_game_end(the_game.current_state)
     # if end_result == True:
     #     end_game(the_game)
     # elif end_result == None:
     #     draw_game(the_game)
-    
-    actions.set_active_board(the_game, square)
     
     config['DBSession'].add(the_game)
 

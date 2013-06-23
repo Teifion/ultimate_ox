@@ -62,8 +62,11 @@ def view_game(request):
         winner = db.find_user(the_game.winner)
     
     # player_1_ids = ["#board_1", "#square_1_1"]
-    player_1_ids = ["#square_%s" % p for p in rules.player_squares(the_game.current_state, 1)]
-    player_2_ids = ["#square_%s" % p for p in rules.player_squares(the_game.current_state, 2)]
+    player_1_ids = [p for p in rules.player_squares(the_game.current_state, 1)]
+    player_2_ids = [p for p in rules.player_squares(the_game.current_state, 2)]
+    
+    player_1_boards = ["#board_%s" % p for p in rules.player_squares(the_game.overall_state, 1)]
+    player_2_boards = ["#board_%s" % p for p in rules.player_squares(the_game.overall_state, 2)]
     active_board = -1
     
     return dict(
@@ -80,6 +83,9 @@ def view_game(request):
         
         player_1_ids = player_1_ids,
         player_2_ids = player_2_ids,
+        
+        player_1_boards = player_1_boards,
+        player_2_boards = player_2_boards,
     )
 
 def make_move(request):

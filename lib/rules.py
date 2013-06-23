@@ -71,9 +71,20 @@ def test_win(board):
     for w1, w2, w3 in wins:
         if board[w1] != " ":
             if board[w1] == board[w2] == board[w3]:
-                return True
+                return board[w1]
     return False
-            
+
+def check_for_sub_win(the_game, square):
+    b, s = square_to_boardsquare(square)
+    
+    if the_game.overall_state[b] == " ":
+        partial = sub_board(the_game.current_state, b)
+        result = test_win(partial)
+        
+        if result != False:
+            mutable_board = list(the_game.overall_state)
+            mutable_board[b] = str(result)
+            the_game.overall_state = "".join(mutable_board)
 
 # def column(current_state, col):
 #     return (current_state[col + row*width] for row in range(height))

@@ -9,8 +9,11 @@ def perform_move(the_game, square):
 
 def set_active_board(the_game, square):
     b, s = rules.square_to_boardsquare(square)
+    sub = rules.sub_board(the_game.current_state, s)
     
-    if the_game.overall_state[b] == " ":
+    if " " not in sub:
+        the_game.active_board = -1
+    elif the_game.overall_state[s] == " ":
         the_game.active_board = s
     else:
         the_game.active_board = -1

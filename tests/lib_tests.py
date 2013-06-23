@@ -16,7 +16,6 @@ class RulesTester(unittest.TestCase):
             " 1  1  1 ",
             "  1  1  1",
             
-            
             "1   1   1",
             "  1 1 1  ",
         )

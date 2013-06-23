@@ -11,9 +11,9 @@
         
         .board, .active_board
         {
-            border: 3px solid #777;
-            width: 234px;
-            height: 234px;
+            border: 6px solid #777;
+            width: 228px;
+            height: 228px;
             float: left;
             padding: 30px;
             background-color: #AAA;
@@ -22,13 +22,14 @@
         .square
         {
             border: 2px solid #CCC;
-            width: 74px;
-            height: 44px;
+            width: 72px;
+            height: 72px;
             float: left;
             
             font-size:  70px;
             text-align: center;
-            padding-top: 30px;
+            vertical-align: bottom;
+            line-height: 80px;
         }
         
         .player1
@@ -49,11 +50,10 @@
         .move_clicker
         {
             display: block;
-            /*background-color: #000;*/
+            /*border: 1px solid #000;*/
             text-decoration: none;
             width: 74px;
             height: 74px;
-            margin-top: -30px;
         }
     </style>
     <div metal:fill-slot="header_buttons" style="display:inline-block;">
@@ -62,8 +62,8 @@
     <div metal:fill-slot="content">
         <script type="text/javascript" charset="utf-8">
             $(function() {
-                // $('${",".join(player_1_ids)}').addClass('player1');
-                // $('${",".join(player_2_ids)}').addClass('player2');
+                $('${",".join(player_1_boards)}').addClass('player1');
+                $('${",".join(player_2_boards)}').addClass('player2');
                 
                 /*
                 if (${the_game.active_board} == -1)
@@ -142,17 +142,17 @@
             <div tal:repeat="board range(9)" id="board_${board}" tal:attributes="class 'active_board' if the_game.active_board in (-1, board) else 'board'">
                 <div tal:repeat="square range(9)" class="square" id="square_${square + (board*9)}"
                     tal:attributes="class 'square player%s' % the_game.current_state[(square + board * 9)]">
-                    <div tal:condition="'#square_%s' % (square + board * 9) in player_1_ids">
+                    <div tal:condition="(square + board * 9) in player_1_ids">
                         O
                     </div>
                     
-                    <div tal:condition="'#square_%s' % (square + board * 9) in player_2_ids">
+                    <div tal:condition="(square + board * 9) in player_2_ids">
                         X
                     </div>
                     
                     <div tal:condition="your_turn">
                         <div tal:condition="the_game.active_board == -1 or the_game.active_board == board">
-                            <div tal:condition="'#square_%s' % (square + board * 9) not in player_1_ids + player_2_ids">
+                            <div tal:condition="(square + board * 9) not in player_1_ids + player_2_ids">
                                 <a href="${request.route_url('ultimate_ox.make_move')}?game_id=${the_game.id}&amp;square=${(square + board * 9)}" class="move_clicker">
                                     &nbsp;
                                 </a>
