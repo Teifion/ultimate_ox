@@ -19,7 +19,7 @@
             background-color: #AAA;
         }
         
-        .square
+        .square_player, .square_player1, .square_player2
         {
             border: 2px solid #CCC;
             width: 72px;
@@ -32,14 +32,24 @@
             line-height: 80px;
         }
         
-        .player1
+        .player1, .square_player1
         {
             border-color: #A00;
         }
         
-        .player2
+        .player2, .square_player2
         {
             border-color: #00A;
+        }
+        
+        .square_player1
+        {
+            background-color: #FEE;
+        }
+        
+        .square_player2
+        {
+            background-color: #EEF;
         }
         
         .active_board
@@ -140,8 +150,8 @@
         
         <div id="the_game">
             <div tal:repeat="board range(9)" id="board_${board}" tal:attributes="class 'active_board' if the_game.active_board in (-1, board) else 'board'">
-                <div tal:repeat="square range(9)" class="square" id="square_${square + (board*9)}"
-                    tal:attributes="class 'square player%s' % the_game.current_state[(square + board * 9)]">
+                <div tal:repeat="square range(9)" id="square_${square + (board*9)}"
+                    tal:attributes="class 'square_player%s' % the_game.current_state[(square + board * 9)]">
                     <div tal:condition="(square + board * 9) in player_1_ids">
                         O
                     </div>
@@ -150,7 +160,7 @@
                         X
                     </div>
                     
-                    <div tal:condition="your_turn">
+                    <div tal:condition="your_turn and the_game.winner is None">
                         <div tal:condition="the_game.active_board == -1 or the_game.active_board == board">
                             <div tal:condition="(square + board * 9) not in player_1_ids + player_2_ids">
                                 <a href="${request.route_url('ultimate_ox.make_move')}?game_id=${the_game.id}&amp;square=${(square + board * 9)}" class="move_clicker">

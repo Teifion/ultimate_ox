@@ -137,11 +137,12 @@ def add_turn(the_game, square):
     
     config['DBSession'].add(new_turn)
 
-# def end_game(the_game):
-#     the_game.complete = True
+def end_game(the_game):
+    the_game.complete = True
     
-#     current_player = rules.current_player_number(the_game.turn)
-#     the_game.winner = rules.get_player_user_id(the_game, 3-current_player)
+    current_player = rules.current_player_number(the_game.turn)
+    the_game.winner = rules.get_player_user_id(the_game, 3-current_player)
+    the_game.active_board = -1
     
 # def draw_game(the_game):
 #     the_game.complete = True
@@ -156,9 +157,9 @@ def perform_move(the_game, square):
     
     rules.check_for_sub_win(the_game, square)
     
-    # end_result = rules.check_for_game_end(the_game.current_state)
-    # if end_result == True:
-    #     end_game(the_game)
+    end_result = rules.test_win(the_game.overall_state)
+    if end_result in ("1", "2"):
+        end_game(the_game)
     # elif end_result == None:
     #     draw_game(the_game)
     
