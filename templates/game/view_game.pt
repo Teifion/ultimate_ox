@@ -32,27 +32,23 @@
             line-height: 80px;
         }
         
-        .your, .square_player1
+        .player1, .square_player1
         {
-            /*border-color: #${'A00' if profile.preferred_colour else '00A'};*/
             border-color: #A00;
         }
         
-        .opponent, .square_player2
+        .player2, .square_player2
         {
-            /*border-color: #${'00A' if profile.preferred_colour else 'A00'};*/
             border-color: #00A;
         }
         
         .square_player1
         {
-            /*background-color: #${'EEF' if profile.preferred_colour else 'FEE'};*/
             background-color: #FEE;
         }
         
         .square_player2
         {
-            /*background-color: #${'FEE' if profile.preferred_colour else 'EEF'};*/
             background-color: #EEF;
         }
         
@@ -76,8 +72,8 @@
     <div metal:fill-slot="content">
         <script type="text/javascript" charset="utf-8">
             $(function() {
-                $('${",".join(your_boards)}').addClass('your');
-                $('${",".join(opponent_boards)}').addClass('opponent');
+                $('${",".join(your_boards)}').addClass('player2');
+                $('${",".join(opponent_boards)}').addClass('player1');
                 
                 /*
                 if (${the_game.active_board} == -1)

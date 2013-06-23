@@ -59,12 +59,14 @@ def view_game(request):
     if the_game.player1 == the_user.id:
         opponent = db.find_user(the_game.player2)
         game_state = actions.set_state_by_colour(the_game.current_state, profile.preferred_colour, player_is_player1=True)
+        overall_state = actions.set_state_by_colour(the_game.overall_state, profile.preferred_colour, player_is_player1=True)
         
         your_ids, opponent_ids = player_1_ids, player_2_ids
         your_boards, opponent_boards = player_1_boards, player_2_boards
     else:
         opponent = db.find_user(the_game.player1)
         game_state = actions.set_state_by_colour(the_game.current_state, profile.preferred_colour, player_is_player1=False)
+        overall_state = actions.set_state_by_colour(the_game.overall_state, profile.preferred_colour, player_is_player1=True)
         
         your_ids, opponent_ids = player_2_ids, player_1_ids
         your_boards, opponent_boards = player_2_boards, player_1_boards
@@ -84,6 +86,7 @@ def view_game(request):
         message     = message,
         opponent    = opponent,
         game_state  = game_state,
+        overall_state = overall_state,
         
         your_ids = your_ids,
         opponent_ids = opponent_ids,
