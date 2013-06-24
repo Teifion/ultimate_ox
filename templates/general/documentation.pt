@@ -1,0 +1,25 @@
+<div metal:use-macro="layout">
+    <style type="text/css" media="screen" metal:fill-slot="css">
+        
+    </style>
+    <div metal:fill-slot="header_buttons" style="display:inline-block;">
+        <a class="inbutton" href="${request.route_url('ultimate_ox.menu')}">O's and X's menu</a>
+    </div>
+    <div metal:fill-slot="content">
+        The game is based off the one <a href="http://mathwithbaddrawings.com/2013/06/16/ultimate-tic-tac-toe/">described here</a>.
+        <br /><br />
+        
+        The game is essentially the same as O's and X's except you are playing on 9 boards at once. If you get three in a row on a board before your opponent then you win that board. If you win three boards in a row then you win the game.
+        <br /><br />
+        
+        The clever part is that your move dictates where your opponent goes. If you pick the centre square then your opponent must make a move on the centre board. This means you must consider where you do/don't want your opponent to go when you make your move. There are some caveats to this:
+        <br />
+        1) If sent to a full board (all 9 squares are filled) then your opponent can move anywhere.<br />
+        2) If sent to a completed board (one of you has won it) then your opponent can move anywhere.<br />
+        <br /><br />
+    </div>
+    
+    <div metal:fill-slot="footer">
+        Open source - <a href="http://github.com/teifion/ultimate_ox">http://github.com/teifion/ultimate_ox</a>
+    </div>
+</div>

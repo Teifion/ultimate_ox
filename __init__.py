@@ -5,10 +5,12 @@ def includeme(config):
     config.add_route('ultimate_ox.menu', '/menu')
     config.add_route('ultimate_ox.stats', '/stats')
     config.add_route('ultimate_ox.preferences', '/preferences')
+    config.add_route('ultimate_ox.documentation', '/documentation')
     
     config.add_view(views.menu, route_name='ultimate_ox.menu', renderer='templates/general/menu.pt', permission='loggedin')
     config.add_view(views.stats, route_name='ultimate_ox.stats', renderer='templates/general/stats.pt', permission='loggedin')
     config.add_view(views.preferences, route_name='ultimate_ox.preferences', renderer='templates/general/preferences.pt', permission='loggedin')
+    config.add_view(views.documentation, route_name='ultimate_ox.documentation', renderer='templates/general/documentation.pt', permission='loggedin')
     
     # Game views
     config.add_route('ultimate_ox.new_game', '/new_game')
@@ -24,8 +26,6 @@ def includeme(config):
     
     # config.add_view(views.stats, route_name='ultimate_ox.stats', renderer='templates/stats.pt', permission='loggedin')
     # config.add_view(views.head_to_head_stats, route_name='ultimate_ox.head_to_head_stats', renderer='templates/head_to_head_stats.pt', permission='loggedin')
-    # config.add_view(views.preferences, route_name='ultimate_ox.preferences', renderer='templates/preferences.pt', permission='loggedin')
-    
     
     config.add_view(views.make_move, route_name='ultimate_ox.make_move', renderer='templates/game/make_move.pt', permission='loggedin')
     config.add_view(views.rematch, route_name='ultimate_ox.rematch', renderer='string', permission='loggedin')

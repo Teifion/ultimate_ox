@@ -34,7 +34,7 @@ def example_config_constructor(config):
     """This is a copy of how I'm setting up my Checkers configuration"""
     
     from .games import ultimate_ox
-    config.include(ultimate_ox)
+    config.include(ultimate_ox, route_prefix="games/ultimate_ox")
     ultimate_ox.config.config['layout'] = '../../../templates/layouts/viewer.pt'
     ultimate_ox.config.config['DBSession'] = DBSession
     ultimate_ox.config.config['User'] = models.User

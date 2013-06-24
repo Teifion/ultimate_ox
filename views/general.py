@@ -44,7 +44,7 @@ def stats(request):
     stats = db.get_stats(the_user.id)
     
     return dict(
-        title    = "Connect Four stats",
+        title    = "Ultimate O's and X's stats",
         layout   = layout,
         the_user = the_user,
         
@@ -92,9 +92,17 @@ def preferences(request):
         message = "Changes saved"
     
     return dict(
-        title    = "Connect Four preferences",
+        title    = "Ultimate O's and X's preferences",
         layout   = layout,
         the_user = the_user,
         profile  = profile,
         message  = message,
+    )
+
+def documentation(request):
+    layout = get_renderer(config['layout']).implementation()
+    
+    return dict(
+        title    = "Ultimate O's and X's documentation",
+        layout   = layout,
     )

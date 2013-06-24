@@ -3,7 +3,7 @@
         
     </style>
     <div metal:fill-slot="header_buttons" style="display:inline-block;">
-        <a class="inbutton" href="${request.route_url('ultimate_ox.menu')}">Connect 4 menu</a>
+        <a class="inbutton" href="${request.route_url('ultimate_ox.menu')}">O's and X's menu</a>
     </div>
     <div metal:fill-slot="content">
         <div tal:condition="message != ''" id="flash_update" style="border: 1px solid #AAA; margin:10px; padding:10px; text-align:center;">
@@ -35,7 +35,6 @@
             
             <input type="submit" value="Submit" name="form.submitted" class="inbutton" />
         </form>
-        
     </div>
     
     <div metal:fill-slot="footer">
