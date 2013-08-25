@@ -166,7 +166,7 @@ def rematch(request):
     newgame_id = db.new_game(the_user, opponent, rematch=game_id)
     the_game.rematch = newgame_id
     
-    com_send(opponent, "ultimate_ox.new_game", "{} has started a game against you".format(the_user.name), str(newgame_id), timedelta(hours=24))
+    com_send(newgame_id, "ultimate_ox.new_game", "{} has started a game against you".format(the_user.name), str(newgame_id), timedelta(hours=24))
     return HTTPFound(location=request.route_url("ultimate_ox.view_game", game_id=newgame_id))
 
 def check_turn(request):
