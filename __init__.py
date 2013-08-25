@@ -1,6 +1,24 @@
-from . import views
+def ox_notifications():
+    try:
+        from ...communique import register, send
+    except ImportError:
+        try:
+            from ..communique import register, send
+        except ImportError:
+            return
+    
+    from .lib.notifications import forward_to_game, forward_to_profile
+    
+    register('ultimate_ox.new_game', 'New game', 'http://localhost:6543/static/images/communique/ox.png', forward_to_game)
+    register('ultimate_ox.new_move', 'New move', 'http://localhost:6543/static/images/communique/ox.png', forward_to_game)
+    register('ultimate_ox.end_game', 'Game over', 'http://localhost:6543/static/images/communique/ox.png', forward_to_game)
+    register('ultimate_ox.win_game', 'Victory!', 'http://localhost:6543/static/images/communique/ox.png', forward_to_game)
 
 def includeme(config):
+    ox_notifications()
+    
+    from . import views
+    
     # General views
     config.add_route('ultimate_ox.menu', '/menu')
     config.add_route('ultimate_ox.stats', '/stats')
@@ -22,11 +40,8 @@ def includeme(config):
     config.add_route('ultimate_ox.check_turn', '/check_turn/{game_id}')
     config.add_route('ultimate_ox.make_move', '/make_move')
     
-    
     config.add_view(views.new_game, route_name='ultimate_ox.new_game', renderer='templates/game/new_game.pt', permission='loggedin')
     config.add_view(views.view_game, route_name='ultimate_ox.view_game', renderer='templates/game/view_game.pt', permission='loggedin')
-    
-    
     
     config.add_view(views.make_move, route_name='ultimate_ox.make_move', renderer='templates/game/make_move.pt', permission='loggedin')
     config.add_view(views.rematch, route_name='ultimate_ox.rematch', renderer='string', permission='loggedin')

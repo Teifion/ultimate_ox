@@ -1,5 +1,6 @@
 import transaction
 import datetime
+from datetime import timedelta
 
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
@@ -13,6 +14,18 @@ from ..lib import (
 )
 
 from ..config import config
+
+try:
+    try:
+        from ....communique import send as com_send
+    except ImportError:
+        try:
+            from ...communique import send as com_send
+        except ImportError:
+            raise
+except Exception as e:
+    def com_send(*args, **kwargs):
+        pass
 
 def new_game(request):
     the_user = config['get_user_func'](request)
@@ -31,6 +44,8 @@ def new_game(request):
             
         else:
             game_id = db.new_game(the_user, opponent)
+            com_send(opponent.id, "ultimate_ox.new_game", "{} has started a game against you".format(the_user.name), str(game_id), timedelta(hours=24))
+            
             return HTTPFound(location=request.route_url("ultimate_ox.view_game", game_id=game_id))
     
     return dict(
@@ -113,6 +128,7 @@ def make_move(request):
             if not rules.is_move_valid(the_game.active_board, the_game.current_state, square):
                 raise Exception("Invalid move")
             db.perform_move(the_game, square)
+            com_send(rules.current_player(the_game), "ultimate_ox.new_move", "{} has made a move".format(the_user.name), str(game_id), timedelta(hours=24))
             return HTTPFound(location=request.route_url("ultimate_ox.view_game", game_id=game_id))
         except Exception as e:
             raise
@@ -149,6 +165,8 @@ def rematch(request):
     
     newgame_id = db.new_game(the_user, opponent, rematch=game_id)
     the_game.rematch = newgame_id
+    
+    com_send(opponent, "ultimate_ox.new_game", "{} has started a game against you".format(the_user.name), str(newgame_id), timedelta(hours=24))
     return HTTPFound(location=request.route_url("ultimate_ox.view_game", game_id=newgame_id))
 
 def check_turn(request):

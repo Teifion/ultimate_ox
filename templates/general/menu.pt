@@ -7,9 +7,6 @@
         <a class="inbutton" href="${request.route_url('ultimate_ox.preferences')}">Preferences</a>
     </div>
     <div metal:fill-slot="content">
-        <div style="width: 600px; margin-bottom:40px;">
-            This game is still in beta and liable to have bugs in it. Games will be wiped once I add in profiles (win ratios etc) but I wanted to get the core mechanics working first. If you discover a bug please email me (info at bottom of page).
-        </div>
         <a class="inbutton docbutton" href="${request.route_url('ultimate_ox.documentation')}">Documentation</a>
         <br /><br />
         
