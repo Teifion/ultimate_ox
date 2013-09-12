@@ -21,7 +21,7 @@
                 });
             </script>
         </div>
-        <a href="${request.route_url('ultimate_ox.game', game_id=the_game.id)}" class="inbutton">Return to game</a>
+        <a href="${request.route_url('ultimate_ox.view_game', game_id=the_game.id)}" class="inbutton">Return to game</a>
         <a href="${request.route_url('ultimate_ox.menu')}" class="inbutton">O's and X's menu</a>
     </div>
     
