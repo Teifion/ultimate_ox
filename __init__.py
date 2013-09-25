@@ -1,3 +1,17 @@
+def ox_nimblescan():
+    try:
+        from ...nimblescan import api
+    except ImportError:
+        try:
+            from ..nimblescan import api
+        except ImportError:
+            return
+    
+    api.register('ultimate_ox.menu', "Ultimate OX - Menu", ['games'], (lambda r: True), api.make_forwarder("ultimate_ox.menu"))
+    api.register('ultimate_ox.new_game', "Ultimate OX - New game", ['games'], (lambda r: True), api.make_form_forwarder("ultimate_ox.new_game", []), '<label for="ns_opponent">Opponent:</label> <input type="text" name="opponent_name" id="ns_opponent" value="" style="display:inline-block;"/>')
+    api.register('ultimate_ox.stats', "Ultimate OX - Stats", ['games'], (lambda r: True), api.make_forwarder("ultimate_ox.stats"))
+    api.register('ultimate_ox.preferences', "Ultimate OX - Preferences", ['games'], (lambda r: True), api.make_forwarder("ultimate_ox.preferences"))
+
 def ox_notifications():
     try:
         from ...communique import register, send
@@ -16,6 +30,7 @@ def ox_notifications():
 
 def includeme(config):
     ox_notifications()
+    ox_nimblescan()
     
     from . import views
     
