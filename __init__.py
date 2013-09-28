@@ -23,7 +23,6 @@ def ox_notifications():
     
     from .lib.notifications import forward_to_game, forward_to_profile
     
-    register('ultimate_ox.new_game', 'New game', 'http://localhost:6543/static/images/communique/ox.png', forward_to_game)
     register('ultimate_ox.new_move', 'New move', 'http://localhost:6543/static/images/communique/ox.png', forward_to_game)
     register('ultimate_ox.end_game', 'Game over', 'http://localhost:6543/static/images/communique/ox.png', forward_to_game)
     register('ultimate_ox.win_game', 'Victory!', 'http://localhost:6543/static/images/communique/ox.png', forward_to_game)
