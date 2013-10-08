@@ -15,6 +15,7 @@ from ..lib import (
 from ..config import config
 
 def menu(request):
+    config['check_blocked'](request)
     the_user = config['get_user_func'](request)
     layout = get_renderer(config['layout']).implementation()
     
@@ -37,6 +38,7 @@ def menu(request):
     )
 
 def stats(request):
+    config['check_blocked'](request)
     the_user = config['get_user_func'](request)
     db.get_profile(the_user.id)
     layout = get_renderer(config['layout']).implementation()
@@ -52,6 +54,7 @@ def stats(request):
     )
 
 def head_to_head_stats(request):
+    config['check_blocked'](request)
     the_user = config['get_user_func'](request)
     message  = ""
     
@@ -77,6 +80,7 @@ def head_to_head_stats(request):
     )
 
 def preferences(request):
+    config['check_blocked'](request)
     the_user = config['get_user_func'](request)
     profile = db.get_profile(the_user.id)
     layout = get_renderer(config['layout']).implementation()
@@ -100,6 +104,7 @@ def preferences(request):
     )
 
 def documentation(request):
+    config['check_blocked'](request)
     layout = get_renderer(config['layout']).implementation()
     
     return dict(

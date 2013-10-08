@@ -23,22 +23,24 @@ config = {
     "User": None,
     "use_achievements": False,
     
-    "viewtest_class": None,
-    "viewtest_function": "",
-    
     "get_user_func": lambda r: KeyError("No function exists to get the user"),
     "get_user": AUser,
+    
+    # I use this at work so it's an opportunity to check that the user's not been blocked
+    "check_blocked": lambda r: None,
 }
 
-def example_config_constructor(config):
-    """This is a copy of how I'm setting up my Checkers configuration"""
-    
-    from .games import ultimate_ox
-    config.include(ultimate_ox, route_prefix="games/ultimate_ox")
-    ultimate_ox.config.config['layout'] = '../../../templates/layouts/viewer.pt'
-    ultimate_ox.config.config['DBSession'] = DBSession
-    ultimate_ox.config.config['User'] = models.User
-    
-    ultimate_ox.config.config['get_user_func']      = lambda r: r.user
-    ultimate_ox.config.config['user.id_property']   = "id"
-    ultimate_ox.config.config['user.name_property'] = "name"
+# This is a copy of how I'm setting up my Checkers configuration    
+# from .games import ultimate_ox
+# config.include(ultimate_ox, route_prefix="games/ultimate_ox")
+# ultimate_ox.config.config['layout'] = '../../../templates/layouts/viewer.pt'
+# ultimate_ox.config.config['DBSession'] = DBSession
+# ultimate_ox.config.config['User'] = models.User
+# 
+# ultimate_ox.config.config['get_user_func']      = lambda r: r.user
+# ultimate_ox.config.config['user.id_property']   = "id"
+# ultimate_ox.config.config['user.name_property'] = "name"
+# 
+# def _game_check(request):
+#     if request.user.blocked: raise HTTPFound(location="/")
+# ultimate_ox.config.config['check_blocked'] = _game_check
