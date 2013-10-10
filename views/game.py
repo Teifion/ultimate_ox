@@ -35,7 +35,7 @@ def new_game(request):
     message = ""
     flash_colour = "A00"
     
-    if "form.submitted" in request.params:
+    if "opponent_name" in request.params:
         opponent_name = request.params['opponent_name'].strip().upper()
         opponent = db.find_user(opponent_name)
         
