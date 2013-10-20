@@ -45,7 +45,7 @@ def new_game(request):
             
         else:
             game_id = db.new_game(the_user, opponent)
-            # com_send(opponent.id, "ultimate_ox.new_game", "{} has started a game against you".format(the_user.name), str(game_id), timedelta(hours=24))
+            com_send(opponent.id, "ultimate_ox.new_game", "{} has started a game against you".format(the_user.name), str(game_id), timedelta(hours=24))
             
             return HTTPFound(location=request.route_url("ultimate_ox.view_game", game_id=game_id))
     
@@ -133,8 +133,8 @@ def make_move(request):
             db.perform_move(the_game, square)
             com_send(rules.current_player(the_game), "ultimate_ox.new_move", "{} has made a move".format(the_user.name), str(game_id), timedelta(hours=24))
             return HTTPFound(location=request.route_url("ultimate_ox.view_game", game_id=game_id))
+            
         except Exception as e:
-            raise
             message = e.args[0]
     else:
         message = "It is not your turn"
