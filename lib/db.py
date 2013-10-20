@@ -99,16 +99,16 @@ def find_user(identifier):
         raise KeyError("No handler for identifier type of '{}'".format(type(identifier)))
 
 def new_game(p1, p2, rematch=None):
+    # 50% chance for either player to be player 1
+    if random() > 0.5:
+        p1, p2 = p2, p1
+    
     game               = UltimateOXGame()
     game.player1       = p1.id
     game.player2       = p2.id
     game.started       = datetime.datetime.now()
     game.turn          = 0
     game.source        = rematch
-    
-    # 50% chance for either player to be player 1
-    if random() > 0.5:
-        game.player1, game.player2 = game.player2, game.player1
     
     game.overall_state = str(rules.empty_overall)
     game.current_state = str(rules.empty_board)
